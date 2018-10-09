@@ -1,0 +1,298 @@
+
+\input{../preamble.tex}
+
+\title%
+{Programaci\'on Orientada a Eventos}
+
+\subject{Programaci\'on Orientada a Eventos}
+
+\begin{document}
+
+\begin{frame}
+   \titlepage
+\end{frame}
+
+\begin{frame}{Contenidos}
+  \tableofcontents
+  % You might wish to add the option [pausesections]
+\end{frame}
+
+
+\section{Introducci\'on}
+
+
+\subsection{Algunos Paradigmas de Programaci\'on}
+
+\begin{frame}[plain,fragile]{Paradigmas de Programaci\'on}{}
+  \begin{enumerate}
+
+    \item Programaci\'on Secuencial o Imperativa: Se basa en definir la secuencia de pasos que debe seguir la ejecuci\'on del programa.
+
+    \item Programaci\'on Orientada a Objetos: Se abstraen las entidades del problema, su comportamiento, su estado, y sus interacciones.
+
+    \item Programaci\'on Funcional: Las funciones de este paradigma son predicados matem\'aticos.
+
+    \item \textbf{Programaci\'on Orientada a Eventos}: Se definen \textit{eventos} y \textit{c\'omo manejarlos}.
+
+  \end{enumerate}
+
+  Hoy vamos a introducir este \'ultimo.
+\end{frame}
+
+
+\section{Programaci\'on Orientada a Eventos}
+
+
+\subsection{Concepto}
+
+\begin{frame}[plain,fragile]{\textquestiondown En qu\'e consiste este paradigma?}{}
+
+  \begin{enumerate}
+
+    \item Toda \textbf{acci\'on} que ejecute el sistema ser\'a en respuesta a los \textbf{sucesos} que acontezcan.\newline
+
+    \item A esos sucesos los llamaremos \textbf{eventos}.\newline
+
+    \item Lo que debemos programar son las acciones para atender o responder a los eventos: los \textbf{handlers}.\newline
+
+  \end{enumerate}
+
+\end{frame}
+
+
+\subsection{Eventos}
+
+\begin{frame}[plain,fragile]{\textquestiondown De d\'onde vienen los eventos?}{
+}
+
+  \begin{enumerate}
+
+    \item Acciones del Usuario:
+    \begin{enumerate}
+      \item Click en un bot\'on.
+      \item Movimiento del puntero del mouse por encima de alg\'un widget.
+      \item Key-Down.
+      \item Key-Up.
+    \end{enumerate}
+
+    \item Basados en tiempo:
+    \begin{enumerate}
+      \item Se alcanza una fecha u horario.
+      \item Se vence un timeout.
+    \end{enumerate}
+
+    \item Generados por otros eventos:
+    \begin{enumerate}
+      \item En nuestro c\'odigo fuente podemos disparar eventos.
+    \end{enumerate}
+
+    \item Definidos por el usuario.
+
+    \item Sucesos del entorno.
+
+  \end{enumerate}
+
+\end{frame}
+
+\begin{frame}[plain,fragile]{\textquestiondown De d\'onde vienen los eventos?}{
+}
+
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.85\textwidth]{./producers_only.png}
+  \end{figure}
+  
+  \begin{itemize}
+    \item \textbf{Como tenemos m\'ultiples fuentes de eventos, tenemos \textexclamdown muchos! problemas de concurrencia}
+  \end{itemize}
+
+\end{frame}
+
+
+\subsection{Cola de Eventos (Event Queue)}
+
+\begin{frame}[plain,fragile]{\textquestiondown C\'omo atenderlos a todos?}{
+}
+ 
+  \begin{itemize}
+
+    \item Antes en el curso vimos varias t\'ecnicas para evitar problemas de concurrencia, y destacamos dos:
+    \begin{enumerate}
+      \item Mutex para encerrar las critical sections.
+      \item Colas bloqueantes.
+    \end{enumerate}
+
+    \item Esas t\'ecnicas tienen en com\'un que serializaban cosas.
+    \begin{enumerate}
+      \item Usando mutex podemos ver una serializaci\'on de critical sections (se hace primero la CS que pidi\'o el mutex primero, despu\'es otra, etc).
+      \item Usando colas bloqueantes, son los datos los que quedan serializados por la naturaleza FIFO de la estructura.
+    \end{enumerate}
+
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[plain,fragile]{\textquestiondown C\'omo atenderlos a todos?}{
+}
+  \begin{itemize}
+
+    \item Podemos modelizar a los eventos como estructuras de datos.
+
+    \item Los eventos son producidos por m\'ultiples actores (como los que mencionamos antes).
+
+    \item Y luego son agregados a una cola para que alguien los atienda.
+
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[plain,fragile]{Event Queue}{
+}
+
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.85\textwidth]{./producers_to_queue.png}
+  \end{figure}
+
+  \begin{itemize}
+
+    \item A esa cola la llamaremos \textbf{cola de eventos} (\textbf{event queue}).
+
+    \item Protegiendo la cola de eventos ya no tenemos problemas de concurrencia. \textquestiondown Por qu\'e?
+
+  \end{itemize}
+
+\end{frame}
+
+
+\subsection{Bucle de Eventos (Event Loop)}
+
+\begin{frame}[plain,fragile]{\textquestiondown Qui\'en lee los eventos de la cola?}{
+  Un pseudoc\'odigo para manejar eventos
+}
+
+  \begin{lstlisting}[style=normal,firstnumber=1]
+while se debe continuar:
+  evento := obtener el siguiente elemento de la cola de eventos
+  
+  if evento == salir:
+    se debe continuar := false
+
+  else if existe manejador para evento:
+    ejecutar manejador
+
+  \end{lstlisting}
+
+  \begin{itemize}
+
+    \item A este bucle se lo llama \textbf{event loop} y es un patr\'on muy usado en aplicaciones con \textit{Graphical User Interfaces (GUIs)}.
+
+    \item Es similar al \textbf{game loop} que usan los juegos para simular el paso del tiempo.
+
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[plain,fragile]{Event Loop}{
+  Actualizando nuestro diagrama...
+}
+
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.85\textwidth]{./producers_to_queue_to_loop.png}
+  \end{figure}
+
+  \begin{itemize}
+
+    \item A esa cola la llamaremos \textbf{cola de eventos} (\textbf{event queue}).
+
+    \item Protegiendo la cola de eventos ya no tenemos problemas de concurrencia. \textquestiondown Por qu\'e?
+
+  \end{itemize}
+
+\end{frame}
+
+
+\subsection{Manejadores (Handlers)}
+
+\begin{frame}[plain,fragile]{Handlers}{
+}
+
+  \begin{itemize}
+    \item Los \textbf{handlers} son secciones de c\'odigo que saben c\'omo responder a la aparici\'on de un Evento.
+
+    \item Pueden requerir cierta informaci\'on sobre el Evento (en qu\'e coordenadas de la pantalla se hizo un click, cu\'anto dur\'o la pulsaci\'on de un bot\'on, alguna informaci\'on que decida el usuario).
+
+    \item Como los va a disparar el event loop, se van a ejecutar de manera secuencial:
+    \begin{itemize}
+      \item No van a tener problemas de concurrencia entre ellos.
+      \item Si uno tarda mucho, va a retrasar a todos los que vengan despu\'es.
+    \end{itemize}
+
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[plain,fragile]{Handlers en aplicaciones con GUI}{
+}
+
+  \begin{itemize}
+
+    \item \textbf{En aplicaciones con GUI tenemos que programar handlers cortos, y que den feedback al usuario.}
+
+    \item Si el usuario pide alg\'un procesamiento largo conviene pasarle la tarea a alg\'un thread (ya sea lanz\'andolo o no), decirle al usuario que se est\'a procesando su pedido, y terminar el handler para que el event loop siga adelante.
+
+    \item En muchos frameworks gr\'aficos, el event loop corre en el hilo principal.
+    \begin{itemize}
+      \item Algunos nos abstraen de programarlo (como GTK).
+      \item En otros lo tenemos que programar nosotros (como SDL).      
+    \end{itemize}
+
+  \end{itemize}
+
+\end{frame}
+
+
+\section{Conclusiones}
+
+\begin{frame}[plain,fragile]{Conclusiones}{
+}
+
+  \begin{itemize}
+
+    \item La programaci\'on orientada a eventos nos evita los problemas de concurrencia entre los handlers.
+
+    \item Es un paradigma muy usado para interactuar con el usuario, ya que es \'el qui\'en decide el flujo del programa.
+
+    \item Cuando hay GUI, como los handlers se ejecutan secuencialmente conviene programarlos cortos y delegar las tareas largas en otro hilo.
+
+    \item Es casi esencial el multithreading cuando tenemos GUIs, y el loop de eventos suele correr en el hilo principal.
+
+  \end{itemize}
+
+\end{frame}
+
+
+\section{Temas Relacionados}
+
+\begin{frame}[plain,fragile]{Temas (muy) relacionados}{
+}
+  \begin{itemize}
+
+    \item Muchos frameworks trabajan con event queues y nos abstraen de su uso.
+    \begin{enumerate}
+      \item En C/C++, podemos mencionar a QT y GTK+ (o gtkmm), que usan una event queue para manejar las interacciones con el usuario. Veremos una de estas opciones la clase que viene.
+      \item En otros lenguajes, NodeJS basa TODO en una event queue.
+    \end{enumerate}
+
+    \item Este patr\'on es muy parecido al Observer (pero con un poco menos de acoplamiento).
+
+    \item En abstracto, el concepto es el mismo que el de una \textit{cola de mensajes}, o un \textit{publish/subscribe}, pero el t\'ermino que usamos depende del contexto.
+
+    \item Varios lenguajes de programaci\'on, como Go implementan \textbf{channels} (nombre en Go) nativos, que son en esencia event queues o message queues.
+
+  \end{itemize}
+
+\end{frame}
+
+\end{document}
