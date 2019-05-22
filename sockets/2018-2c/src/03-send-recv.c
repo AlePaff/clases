@@ -76,7 +76,7 @@ int main(int argc, char** argv) {
   **/
   int bytes_recv = 0;
   while (are_we_connected) {
-    s = recv(socketFd, &response[bytes_recv], RESPONSE_MAX_LEN - bytes_recv - 1, MSG_NOSIGNAL);
+    s = recv(socketFd, &response[bytes_recv], RESPONSE_MAX_LEN - bytes_recv - 1, 0);
 
     if (s > 0) {
       bytes_recv = s; 
