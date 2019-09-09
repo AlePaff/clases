@@ -14,8 +14,7 @@ int main(int argc, char** argv) {
   const char* hostname = "fi.uba.ar";
   const char* servicename = "http";
 
-  // Creamos el socket con soporte a ipv4 y TCP
-  int socketFd = socket(AF_INET, SOCK_STREAM, 0);
+  int socketFd = -1;
 
   // Utilizamos hints para "filtrar" las direcciones que me interesan
   struct addrinfo hints;
