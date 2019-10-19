@@ -26,4 +26,6 @@ Los ejemplos están divididos en las siguientes carpetas:
 
 * **02-functions**: Ejemplos de algunas características particulares de las funciones en Lua, como las funciones variádicas y funciones anónimas. Este ejemplo está pensado para ser ejecutado por el interprete de Lua.
 
+* **03-stack**: En este ejemplo leemos un archivo de configuración desde nuestra aplicación en C y analizamos el stack de variables de Lua.
 
+* **04-call-lua-functions**: En este ejemplo utilizamos el stack para realizar llamadas a funciones de Lua, pasando variables y leyendo el resultado de la operación.
