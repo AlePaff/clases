@@ -168,8 +168,8 @@ int main(int argc, char *argv[]) {
          printf("Error: %s\n", strerror(errno));
          is_there_a_socket_error = true;
       }
-      else if (s == 0) { // nos cerraron el socket :(
-         is_the_remote_socket_closed = true;
+      else if (s == 0) {
+         // esta situacion se puede dar si un buffer interno de uno de los dos sistemas operativos esta lleno
       }
       else {
          bytes_sent += s;
