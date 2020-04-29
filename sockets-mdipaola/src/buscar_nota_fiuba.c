@@ -161,7 +161,7 @@ int main(int argc, char *argv[]) {
    
    /* Enviamos el mensaje intentando enviar todo el mensaje de un solo intento,
       y solo reintentando enviar aquellos bytes que no pudiero entrar */
-   while (bytes_sent < request_len && is_there_a_socket_error == false && is_the_remote_socket_closed == false) {
+   while (bytes_sent < request_len && is_there_a_socket_error == false) {
       s = send(skt, &request[bytes_sent], request_len - bytes_sent, MSG_NOSIGNAL);
 
       if (s == -1) {  // ups,  hubo un error
@@ -176,7 +176,7 @@ int main(int argc, char *argv[]) {
       }
    }
    
-   if (is_the_remote_socket_closed || is_there_a_socket_error) {
+   if (is_there_a_socket_error) {
       shutdown(skt, SHUT_RDWR);
       close(skt);
       return 1;
