@@ -1,5 +1,7 @@
 # C++ Avanzado
 
+--
+
 Features y otros trucos que nos ofrece C++
 
 * Namespaces
@@ -319,6 +321,77 @@ Para acceder a su contenido, el `weak_ptr` debe ser promocionado a `shared_ptr` 
 
 ---
 
+# Range based for
+
+La iteración basada en rangos es una forma de recorrer un rango de valores generalmente basados en una colección.
+
+~~~
+void printValues(const std::vector<int>& valueList) {
+  for (auto value : valueList) {
+    std::cout << value << std::endl;
+  }
+}
+~~~
+
+---
+
+## Equivalencia
+
+~~~{.cpp}
+for (item : range_expression) {
+  /* codigo en loop */
+}
+~~~
+
+Es equivalente a
+
+~~~{.cpp}
+auto && __range = range_expression ;
+for (auto __begin = begin_expr, __end = end_expr; __begin != __end; ++__begin) {
+  item = *__begin;
+  /* codigo en loop */
+}
+~~~
+
+--
+
+`range_expression` puede ser un array, una instancia de una clase que tenga los métodos `begin` y `end` que devuelvan un iterador, o una variable que pueda ser argumento de funciones `begin` y `end`.
+
+---
+
+### Ejemplo
+
+~~~{.cpp}
+class MyIterator {
+public:
+  // Constructor del iterador
+  MyIterator(const Bar& bar);
+  // Se usa para avanzar el iterador
+  MyIterator& operator++();
+  // Se usa para extraer el valor del iterador.
+  // Notar que puedo generar cualquier tipo de elemento
+  Baz operator*() const;
+  // Se usa para comparar contra el final del rango.
+  bool operator!=(const MyIterator& other) const;
+...
+};
+~~~
+
+~~~{.cpp}
+class MyRange {
+public:
+  // Construyo el objeto rango
+  explicit MyRange(const Foo& foo);
+  // Construye un iterador que representa el inicio del rango
+  MyIterator begin();
+  // Construye un iterador que representa el final del rango
+  // Cada vez que begin avance, será comparado contra este iterador.
+  MyIterator end();
+};
+~~~
+
+---
+
 # Otras lecturas interesantes
 
 Acerca de las categorías de las expresiones en C++ (glvalues, rvalues, etc)
@@ -328,3 +401,7 @@ Acerca de las categorías de las expresiones en C++ (glvalues, rvalues, etc)
 * http://www.stroustrup.com/terminology.pdf
 
 * http://www.stroustrup.com/C++11FAQ.html#rval
+
+## Referencias
+
+* https://en.cppreference.com/w/cpp/language/range-for
