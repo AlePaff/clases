@@ -161,22 +161,22 @@ int main(int argc, char *argv[]) {
    
    /* Enviamos el mensaje intentando enviar todo el mensaje de un solo intento,
       y solo reintentando enviar aquellos bytes que no pudiero entrar */
-   while (bytes_sent < request_len && is_there_a_socket_error == false && is_the_remote_socket_closed == false) {
+   while (bytes_sent < request_len && is_there_a_socket_error == false) {
       s = send(skt, &request[bytes_sent], request_len - bytes_sent, MSG_NOSIGNAL);
 
       if (s == -1) {  // ups,  hubo un error
          printf("Error: %s\n", strerror(errno));
          is_there_a_socket_error = true;
       }
-      else if (s == 0) { // nos cerraron el socket :(
-         is_the_remote_socket_closed = true;
+      else if (s == 0) {
+         // esta situacion se puede dar si un buffer interno de uno de los dos sistemas operativos esta lleno
       }
       else {
          bytes_sent += s;
       }
    }
    
-   if (is_the_remote_socket_closed || is_there_a_socket_error) {
+   if (is_there_a_socket_error) {
       shutdown(skt, SHUT_RDWR);
       close(skt);
       return 1;
