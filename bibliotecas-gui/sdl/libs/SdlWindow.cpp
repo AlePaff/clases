@@ -10,13 +10,13 @@ SdlWindow::SdlWindow(int width, int height) :
         width(width), height(height) {
     int errCode = SDL_Init(SDL_INIT_VIDEO);
     if (errCode) {
-        throw SdlException("Error en la inicialización", SDL_GetError());
+        throw SdlException("Error en la inicialización");
     }
     errCode = SDL_CreateWindowAndRenderer(
         width, height, SDL_RENDERER_ACCELERATED,
         &this->window, &this->renderer);
     if (errCode) {
-        throw SdlException("Error al crear ventana", SDL_GetError());
+        throw SdlException("Error al crear ventana");
     }   
 }
 

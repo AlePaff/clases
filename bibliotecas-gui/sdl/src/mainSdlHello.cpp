@@ -9,10 +9,10 @@ int main(int argc, char** argv){
         SdlWindow window(800, 600);
         window.fill();
         // Usar factory
-        SdlTexture im("cat.gif", window);
+        SdlTexture im("assets/cat.gif", window, Color{0x7f, 0x7f, 0xbb});
         Area srcArea(0, 0, 300, 300);
         Area destArea(100, 100, 300, 300);
-        im.render(srcArea, destArea);
+        im.render(srcArea, destArea, SDL_FLIP_NONE);
         window.render();
         SDL_Delay(3000);
     } catch (std::exception& e) {

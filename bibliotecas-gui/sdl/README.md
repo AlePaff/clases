@@ -23,6 +23,14 @@ Ejecutar escribiendo `./sdl-hello`
 
 ### Eventos básicos
 
-Carga una imagen y la muestra en pantalla. Desplaza la imagen por el canvas al presionar las teclas direccionales
+Carga una animación y la muestra en pantalla. Desplaza la imagen, animandolá por el canvas al presionar las teclas
+direccionales
 
 Ejecutar escribiendo `./sdl-events`
+
+### Stencil buffer
+
+Carga una imagen estática y la superpone con un stencil, que actua como sombreado para simular un *field of view*.
+Este mismo campo de visión puede ser modificado con las teclas direccionales.
+
+Ejecutar escribiendo `./sdl-alpha-blending
