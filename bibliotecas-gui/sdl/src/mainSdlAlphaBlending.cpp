@@ -14,16 +14,17 @@ int main(int argc, char** argv){
         // Usar factory
         SdlTexture im("assets/cat.gif", window);
         // Dibujo la imagen en el centro de la pantalla
+        //Area srcArea(0, 0, 800, 446);
         Area srcArea(0, 0, 300, 300);
-        Area destArea((WINDOW_WIDTH / 2) - 150, (WINDOW_HEIGHT / 2) - 150, 300, 300);
+        Area destArea((WINDOW_WIDTH / 2) - 400, (WINDOW_HEIGHT / 2) - 300, 800, 600);
         // El destination del stencil es mas grande que el tamaño de la pantalla para evitar fugas de luz
+        Area stencilSrc(0, 0, 500, 500);
         Area stencilDest((WINDOW_WIDTH / 2) - 500, (WINDOW_HEIGHT / 2) - 500, 1000, 1000);
-        Area stencilSrc(0, 0, 200, 200);
         // Cargo la imagen como textura, avisandolé a SDL que todo lo que sea de color blanco (0xffffff)
         // debe ser transparente en el dibujado (color keying).
         // El blending se usa para superponer dos texturas (como esto emula la sombra, quiero que sea semi-transparente)
         // El valor final es el alfa, que tan opaco quiero que se vea la imagen, a valor mas alto, menos transparente es.
-        SdlTexture stencil("assets/stencil.png", window, Color{0xFF, 0xFF, 0xFF}, SDL_BLENDMODE_BLEND, 220);
+        SdlTexture stencil("assets/stencil.png", window, Color{0xFF, 0xFF, 0xFF}, SDL_BLENDMODE_BLEND, 180);
         bool running = true;
         float angle = 0.0f;
         while (running) {

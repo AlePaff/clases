@@ -19,7 +19,8 @@ public:
     /**
      * Crea un SDL_Texture, lanza una excepción si el filename es inválido
      **/
-    SdlTexture(const std::string &filename, const SdlWindow& window, Color key, SDL_BlendMode blending = SDL_BLENDMODE_NONE, uint8_t alpha = 255);
+    SdlTexture(const std::string &filename, const SdlWindow& window, Color key, SDL_BlendMode blending, uint8_t alpha);
+    SdlTexture(const std::string &filename, const SdlWindow& window, Color key);
     SdlTexture(const std::string &filename, const SdlWindow& window);
     /**
      * Libera la memoria reservada por la textura
@@ -36,7 +37,6 @@ public:
     int getWidth() const;
     int getHeight() const;
 private:
-    void loadTexture(const std::string &filename);
     SDL_Renderer* renderer;
     SDL_Texture* texture;
     int width{0};

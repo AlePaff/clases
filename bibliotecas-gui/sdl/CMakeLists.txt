@@ -4,14 +4,7 @@ project(sdl)
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-add_library(sdldemo
-  libs/Area.cpp
-  libs/Animation.cpp
-  libs/Exception.cpp
-  libs/SdlTexture.cpp
-  libs/SdlException.cpp
-  libs/SdlWindow.cpp
-)
+add_subdirectory(libs)
 
 # Agrego la carpeta con los headers autogenerados a los includes
 message("Agregando '${PROJECT_SOURCE_DIR}/libs' como directorio de includes")
@@ -23,6 +16,7 @@ add_executable (sdl-hello
 
 add_executable (sdl-events
   src/mainSdlEvents.cpp
+  src/Worm.cpp
 )
 
 add_executable (sdl-alpha-blending

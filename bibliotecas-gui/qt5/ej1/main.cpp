@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <QLabel>
 #include <QPushButton>
+#include <QHBoxLayout>
 #include <QVBoxLayout>
 
 int main(int argc, char *argv[]) {

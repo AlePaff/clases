@@ -10,6 +10,8 @@
 
 #include "SdlException.h"
 
+#define FRAME_RATE 1000000.0f/25.0f
+
 class SdlTexture;
 class Area;
 
@@ -19,21 +21,20 @@ class Animation {
     ~Animation();
     void update(float dt);
     void render(const Area& dst, const SDL_RendererFlip &flipType);
-    void advanceFrame();
+
 
    private:
+    void advanceFrame();
     /** SDL texture of the raw image. */
     const SdlTexture *texture;
     /** Current animation frame. */
-    int currentFrame{0};
+    int currentFrame;
     /** Total number of frames in the sprite. */
     int numFrames;
     /** Size of the sprite (height and width). */
     int size;
     /** Time elapsed since last update. */
-    float elapsed{0.0f};
-    /** Frames per seconds (should this be elsewere?). */
-    float frameRate{1.0f / 25.0f};
+    float elapsed;
 };
 
 #endif  //__ANIMATION_H__

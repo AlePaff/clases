@@ -14,11 +14,9 @@
 #include "Animation.h"
 #include "SdlTexture.h"
 
-Animation::Animation(const SdlTexture *texture) : texture(texture) {
-    /* assumes the frames are squares */
-    this->numFrames = this->texture->getHeight() / this->texture->getWidth();
-    this->size = this->texture->getWidth();
-
+Animation::Animation(const SdlTexture *texture) : texture(texture), currentFrame(0),
+                                                  numFrames(this->texture->getHeight() / this->texture->getWidth()),
+                                                  size(this->texture->getWidth()), elapsed(0.0f) {
     assert(this->numFrames > 0);
     assert(this->size > 0);
 }
@@ -28,9 +26,9 @@ Animation::~Animation() {}
 void Animation::update(float dt) {
     this->elapsed += dt;
     /* checks if the frame should be updated based on the time elapsed since the last update */
-    while (this->elapsed > this->frameRate) {
+    while (this->elapsed > FRAME_RATE) {
         this->advanceFrame();
-        this->elapsed -= this->frameRate;
+        this->elapsed -= FRAME_RATE;
     }
 }
 

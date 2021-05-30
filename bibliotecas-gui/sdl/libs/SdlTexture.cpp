@@ -28,7 +28,7 @@ SdlTexture::SdlTexture(const std::string &filename, const SdlWindow& window): re
 
 }
 
-SdlTexture::SdlTexture(const std::string &filename, const SdlWindow& window, Color key, SDL_BlendMode blending, uint8_t alpha)
+SdlTexture::SdlTexture(const std::string &filename, const SdlWindow& window, Color key) 
     : renderer(window.getRenderer()) {
     /** 
      * Cargo la imagen en una superficie temporal
@@ -50,19 +50,19 @@ SdlTexture::SdlTexture(const std::string &filename, const SdlWindow& window, Col
     this->height = tmp->h;
     this->width = tmp->w;
 
-    SDL_SetTextureBlendMode(this->texture, blending);
-    SDL_SetTextureAlphaMod(this->texture, alpha);
-
     /* releases the temporary surface */
     SDL_FreeSurface(tmp);
 }
 
-SdlTexture::~SdlTexture() {
-    SDL_DestroyTexture(this->texture);
+SdlTexture::SdlTexture(const std::string &filename, const SdlWindow& window, Color key, SDL_BlendMode blending, uint8_t alpha)
+    : SdlTexture(filename, window, key) {
+
+    SDL_SetTextureBlendMode(this->texture, blending);
+    SDL_SetTextureAlphaMod(this->texture, alpha);
 }
 
-void SdlTexture::loadTexture(const std::string &filename) {
-    
+SdlTexture::~SdlTexture() {
+    SDL_DestroyTexture(this->texture);
 }
 
 int SdlTexture::render(const Area& src, const Area& dest, const SDL_RendererFlip& flipType) const {
