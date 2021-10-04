@@ -10,7 +10,7 @@
       3) El server lee ese mensaje y luego se lo reenvia al cliente.
 
    Se compila con
-      gcc -std=c99 -o echoserver echoserver.c
+      gcc -D _POSIX_C_SOURCE=200809L -std=c11 -o echoserver echoserver.c
 
    Se ejecuta como
       ./echoserver PORT PASSWORD
@@ -22,8 +22,6 @@
    Asi que no deberia haber ningun problema en, por ejemplo, que pongas
    tu password de facebook/clave bancaria, no?
 */
-
-#define _POSIX_C_SOURCE 200112L
 
 #include <stdio.h>
 #include <errno.h>
@@ -37,6 +35,12 @@
 #include <unistd.h>
 
 
+/*
+ * No te copies de este código. El objetivo de los ejemplos de Sockets
+ * es que entiendas como funcionan y como usarlos.
+ *
+ * Para los TPs tendras que implementar tu propia version de ellos.
+ * */
 int recv_message(int skt, char *buf, int size) {
    int received = 0;
    int s = 0;
@@ -64,6 +68,12 @@ int recv_message(int skt, char *buf, int size) {
    }
 }
 
+/*
+ * No te copies de este código. El objetivo de los ejemplos de Sockets
+ * es que entiendas como funcionan y como usarlos.
+ *
+ * Para los TPs tendras que implementar tu propia version de ellos.
+ * */
 int send_message(int skt, char *buf, int size) {
    int sent = 0;
    int s = 0;
@@ -122,6 +132,12 @@ void process(char *password) {
 
 #define MAX_SMALL_BUF_LEN 3   //2 bytes
 
+/*
+ * No te copies de este código. El objetivo de los ejemplos de Sockets
+ * es que entiendas como funcionan y como usarlos.
+ *
+ * Para los TPs tendras que implementar tu propia version de ellos.
+ * */
 int main(int argc, char *argv[]) {
    int s = 0;
    unsigned short len = 0;

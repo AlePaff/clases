@@ -7,8 +7,8 @@
 
    El ejemplo esta lleno de comentarios y es bastante "verboso".
 
-   Se compila con 
-      gcc -std=c99 -o buscar_nota_fiuba  buscar_nota_fiuba.c 
+   Se compila con
+      gcc -D _POSIX_C_SOURCE=200809L -std=c11 -o buscar_nota_fiuba  buscar_nota_fiuba.c
 
    Se ejecuta como
       ./buscar_nota_fiuba  NODEIDE
@@ -16,22 +16,11 @@
    donde NODEID es el id de una nota en el sitio de la fiuba.
    Por ejemplo
       ./buscar_nota_fiuba 745
-      
+
    se descarga la pagina de Informacion de Alumnos
 */
 
 
-
-/*
-   Este define le dice a nuestro compilador que queremos 
-   usar las extensiones POSIX.
-
-   getaddrinfo, gai_error y freeaddrinfo no estan incluidas en el
-   estandar C99 pero si en las ultimas versiones de POSIX.
-   
-   Con esto le decimos al compilador que esta OK
-*/
-#define _POSIX_C_SOURCE 200112L
 
 /*
    Includes clasicos de C
@@ -60,6 +49,12 @@
 #define REQUEST_MAX_LEN 128
 #define RESPONSE_MAX_LEN 1024
 
+/*
+ * No te copies de este código. El objetivo de los ejemplos de Sockets
+ * es que entiendas como funcionan y como usarlos.
+ *
+ * Para los TPs tendras que implementar tu propia version de ellos.
+ * */
 int main(int argc, char *argv[]) {
    int s = 0;
    bool are_we_connected = false;
@@ -69,7 +64,7 @@ int main(int argc, char *argv[]) {
    // A quien nos queremos conectar
    const char *hostname = "www.fi.uba.ar";
    const char *servicename = "http";
-   
+
    struct addrinfo hints;
    struct addrinfo *result, *ptr;
 
@@ -82,12 +77,12 @@ int main(int argc, char *argv[]) {
    int bytes_sent = 0;
    int bytes_recv = 0;
 
-   if (argc != 2) return 1; 
+   if (argc != 2) return 1;
 
    /* Creo una especie de filtro para decir que direcciones me interesan
       En este caso, TCP sobre IPv4 para ser usada por un socket 'activo'
       (no es para un server)
-   */ 
+   */
    memset(&hints, 0, sizeof(struct addrinfo));
    hints.ai_family = AF_INET;       /* IPv4 (or AF_INET6 for IPv6)     */
    hints.ai_socktype = SOCK_STREAM; /* TCP  (or SOCK_DGRAM for UDP)    */
@@ -96,26 +91,26 @@ int main(int argc, char *argv[]) {
 
    /* Obtengo la (o las) direcciones segun el nombre de host y servicio que
       busco
-     
+
       De todas las direcciones posibles, solo me interesan aquellas que sean
       IPv4 y TCP (segun lo definido en hints)
-      
+
       El resultado lo guarda en result
    */
    s = getaddrinfo(hostname, servicename, &hints, &result);
 
-   /* Es muy importante chequear los errores. 
+   /* Es muy importante chequear los errores.
       En caso de uno, usar gai_strerror para traducir el codigo de error (s)
       a un mensaje humanamente entendible.
    */
-   if (s != 0) { 
+   if (s != 0) {
       printf("Error in getaddrinfo: %s\n", gai_strerror(s));
       return 1;
    }
 
    /* getaddrinfo retorna una **lista** de direcciones. Hay que iterarla
       para encontrar la que mejor se ajusta.
-      (generalmente la primera direccion es la mejor, pero dependera de 
+      (generalmente la primera direccion es la mejor, pero dependera de
       cada caso)
 
       En este caso voy a probar cada direccion posible. La primera que
@@ -158,7 +153,7 @@ int main(int argc, char *argv[]) {
    request[REQUEST_MAX_LEN-1] = 0;
    request_len = strlen(request);
 
-   
+
    /* Enviamos el mensaje intentando enviar todo el mensaje de un solo intento,
       y solo reintentando enviar aquellos bytes que no pudiero entrar */
    while (bytes_sent < request_len && is_there_a_socket_error == false) {
@@ -175,14 +170,14 @@ int main(int argc, char *argv[]) {
          bytes_sent += s;
       }
    }
-   
+
    if (is_there_a_socket_error) {
       shutdown(skt, SHUT_RDWR);
       close(skt);
       return 1;
    }
 
-   /* 
+   /*
       Recibimos el mensaje que viene del sitio web.
       Para simplificar, vamos a leer hasta que el server nos cierre la coneccion.
       (no es para nada optimo, pero es mas simple)
@@ -200,14 +195,14 @@ int main(int argc, char *argv[]) {
          is_the_remote_socket_closed = true;
       }
       else {
-         bytes_recv = s; 
+         bytes_recv = s;
 
          response[bytes_recv] = 0;
          printf("%s", response);
 
-         //reusamos el mismo buffer, no me interesa tener toda la 
+         //reusamos el mismo buffer, no me interesa tener toda la
          //respuesta en memoria
-         bytes_recv = 0; 
+         bytes_recv = 0;
       }
    }
    printf("\n");
