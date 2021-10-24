@@ -2,21 +2,18 @@
  * Created by Federico Manuel Gomez Peter
  * Date: 17/05/18.
  */
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#include <SDL2pp/SDL2pp.hh>
 
 #include <algorithm>
 #include <cassert>
 #include <iostream>
 #include <string>
 
-#include "Area.h"
 #include "Animation.h"
-#include "SdlTexture.h"
 
-Animation::Animation(const SdlTexture *texture) : texture(texture), currentFrame(0),
-                                                  numFrames(this->texture->getWidth() / this->texture->getHeight()),
-                                                  size(this->texture->getHeight()), elapsed(0.0f) {
+Animation::Animation(SDL2pp::Texture &texture) : texture(texture), currentFrame(0),
+                                                  numFrames(this->texture.GetWidth() / this->texture.GetHeight()),
+                                                  size(this->texture.GetHeight()), elapsed(0.0f) {
     assert(this->numFrames > 0);
     assert(this->size > 0);
 }
@@ -39,9 +36,15 @@ void Animation::update(float dt) {
  * @param x X coordinate.
  * @param y Y corrdinate.
  */
-void Animation::render(const Area &dst, const SDL_RendererFlip &flipType) {
-    Area src(1 + (1 + this->size) * this->currentFrame, 0, this->size, this->size);
-    this->texture->render(src, dst, flipType);
+void Animation::render(SDL2pp::Renderer &renderer, const SDL2pp::Rect dst, SDL_RendererFlip &flipType) {
+    renderer.Copy(
+            texture,
+            SDL2pp::Rect(1 + (1 + this->size) * this->currentFrame, 0, this->size, this->size),
+            dst,
+            0.0,                // don't rotate
+            SDL2pp::NullOpt,    // rotation center - not needed
+            flipType
+        );
 }
 
 void Animation::advanceFrame() {

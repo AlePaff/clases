@@ -1,15 +1,15 @@
 #include "Area.h"
-#include "Worm.h"
+#include "Player.h"
 
-Worm::Worm(SdlTexture &texture): an(&texture), facingLeft(false), moving(false), x(300), y(400) {}
+Player::Player(SdlTexture &texture): an(&texture), facingLeft(false), moving(false), x(300), y(300) {}
 
-Worm::~Worm() {}
+Player::~Player() {}
 
 /**
  * Notar que el manejo de eventos y la actualización de modelo ocurren en momentos distintos.
  * Esto les va a resultar muy util en un juego multiplaforma. 
  */
-void Worm::update(float dt) {
+void Player::update(float dt) {
     if (moving) {
         an.update(dt);
         if (facingLeft)
@@ -19,22 +19,22 @@ void Worm::update(float dt) {
     }
 }
 
-void Worm::render() {
-    SDL_RendererFlip flip = facingLeft ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
-    Area destArea(x, y, 60, 60);
+void Player::render() {
+    SDL_RendererFlip flip = facingLeft ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+    Area destArea(x, y, 200, 200);
     an.render(destArea, flip);
 }
 
-void Worm::moveRigth() {
+void Player::moveRigth() {
     moving = true;
     facingLeft = false;
 }
 
-void Worm::moveLeft() {
+void Player::moveLeft() {
     moving = true;
     facingLeft = true;
 }
 
-void Worm::stopMoving() {
+void Player::stopMoving() {
     moving = false;
 }

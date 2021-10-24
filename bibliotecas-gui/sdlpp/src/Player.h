@@ -1,14 +1,14 @@
 #ifndef __WORM_H__
 #define __WORM_H__
 
+#include <SDL2pp/SDL2pp.hh>
 #include "Animation.h"
-
-class Worm {
+class Player {
 public:
-    Worm(SdlTexture &texture);
-    ~Worm();
+    Player(SDL2pp::Texture &texture);
+    ~Player();
     void update(float dt);
-    void render();
+    void render(SDL2pp::Renderer &renderer);
     void moveRigth();
     void moveLeft();
     void stopMoving();
