@@ -16,7 +16,7 @@ int main(int argc, char** argv){
         // Dibujo la imagen en el centro de la pantalla
         //Area srcArea(0, 0, 800, 446);
         Area srcArea(0, 0, 300, 300);
-        Area destArea((WINDOW_WIDTH / 2) - 400, (WINDOW_HEIGHT / 2) - 300, 800, 600);
+        Area destArea(0, 0, 800, 600);
         // El destination del stencil es mas grande que el tamaño de la pantalla para evitar fugas de luz
         Area stencilSrc(0, 0, 500, 500);
         Area stencilDest((WINDOW_WIDTH / 2) - 500, (WINDOW_HEIGHT / 2) - 500, 1000, 1000);
