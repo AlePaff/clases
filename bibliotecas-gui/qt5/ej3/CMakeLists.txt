@@ -1,7 +1,7 @@
 project(qt5-demo)
 
 # Find the QtWidgets library
-find_package(Qt5Widgets)
+find_package(Qt5Widgets COMPONENTS Widgets REQUIRED)
 
 message("[INFO] La raiz del proyecto es ${PROJECT_SOURCE_DIR}")
 
