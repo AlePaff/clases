@@ -18,7 +18,7 @@ include_directories(${PROJECT_SOURCE_DIR}/libs)
 include_directories(${SDL2PP_INCLUDE_DIRS})
 
 # Find the QtWidgets library
-find_package(Qt5Widgets)
+find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
 qt5_wrap_ui(UIS_HEADERS
   ui/mainWindow.ui

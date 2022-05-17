@@ -3,7 +3,7 @@
 //
 
 #include <map>
-#include <csignal>
+#include <unistd.h>
 #include "Gameloop.h"
 
 Gameloop::Gameloop(SDL2pp::Renderer &renderer, SDL2pp::Texture &texture): renderer(renderer),

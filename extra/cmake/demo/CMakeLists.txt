@@ -4,3 +4,4 @@ project(cmake-demo)
 
 add_subdirectory(ej0)
 add_subdirectory(ej1)
+add_subdirectory(ej2)
