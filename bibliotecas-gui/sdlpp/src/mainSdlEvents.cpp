@@ -21,8 +21,9 @@ int main(int argc, char** argv){
         SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
         // Usar factory
-        SDL2pp::Texture im(renderer, 
-            SDL2pp::Surface("assets/soldier2.png").SetColorKey(true, 0));
+        SDL2pp::Texture im(
+            renderer,SDL2pp::Surface("assets/soldier2.png").SetColorKey(true, 0x000000)
+        );
 
         Player player(im);
         bool running = true;
@@ -90,6 +91,7 @@ static bool handleEvents(Player &player) {
 }
 
 static void render(SDL2pp::Renderer &renderer, Player &player) {
+    renderer.SetDrawColor(0x80, 0x80, 0x80);
     renderer.Clear();
     player.render(renderer);
     renderer.Present();

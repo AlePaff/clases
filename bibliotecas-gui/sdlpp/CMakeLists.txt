@@ -24,6 +24,18 @@ add_executable (sdlpp-hello
   src/mainSdlHello.cpp  
 )
 
+add_executable (sdlpp-alpha
+  src/mainAlphaBlending.cpp
+  src/DynamicStencil.cpp
+  src/DynamicStencil.h
+  src/SdlException.cpp
+  src/SdlException.h
+)
+
+add_executable(sdlpp-primitives
+        src/mainSDLFigures.cpp
+)
+
 add_executable (sdlpp-events
   src/mainSdlEvents.cpp
   src/Player.cpp
@@ -31,6 +43,8 @@ add_executable (sdlpp-events
 )
 
 target_link_libraries(sdlpp-hello ${SDL2PP_LIBRARIES})
+target_link_libraries(sdlpp-alpha ${SDL2PP_LIBRARIES} SDL2_gfx)
+target_link_libraries(sdlpp-primitives ${SDL2PP_LIBRARIES} SDL2_gfx)
 target_link_libraries(sdlpp-events ${SDL2PP_LIBRARIES})
 
 file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})

@@ -15,19 +15,23 @@ int main(int argc, char** argv){
         SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
         // Usar factory
-        SDL2pp::Texture sprites(renderer, "assets/cat.gif");
+        SDL2pp::Texture sprite(renderer, "assets/cat.gif");
+
+        // modulación de color. Con esta técnica simple podemos con un solo sprite crear
+        // y mostrar distintos players, pintandolós de colores distintos. Cambiá los valores de RGB
+        // para ver como cambia el resultado final!
+        //sprite.SetColorMod(0,0, 0xff);
 
         // Clear screen
         renderer.Clear();
 
         // Render our image, stretching it to the whole window
-        int vcenter = renderer.GetOutputHeight() / 2; // Y coordinate of window center
-        renderer.Copy(sprites);
+        renderer.Copy(sprite);
 
         // Show rendered frame
         renderer.Present();
 
-        SDL_Delay(3000);
+        SDL_Delay(30000);
     } catch (std::exception& e) {
         std::cout << e.what() << std::endl;
         return 1;
